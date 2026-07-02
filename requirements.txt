@@ -1,0 +1,9 @@
+fastapi==0.111.*
+uvicorn[standard]
+httpx==0.27.*
+pydantic==2.7.*
+sqlalchemy==2.*
+aiosqlite
+alembic
+pytest
+pytest-asyncio
