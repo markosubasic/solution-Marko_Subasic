@@ -131,3 +131,6 @@ Prompt koji sam koristio:
 Claude sam iskoristio i za async pytest setup (fixture koja svakom testu daje svježu
 in-memory SQLite bazu preko dependency override-a za `get_session`, uz `StaticPool`
 da sve konekcije dijele istu in-memory bazu).
+
+I ovaj README je napisan uz pomoć Claudea - dao sam mu popis endpointa i strukturu
+projekta, a generirani tekst sam pregledao i doradio.
