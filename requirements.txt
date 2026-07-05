@@ -5,5 +5,7 @@ pydantic==2.7.*
 sqlalchemy==2.*
 aiosqlite
 alembic
+pyjwt
 pytest
 pytest-asyncio
+ruff
