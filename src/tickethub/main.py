@@ -5,6 +5,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from tickethub.config import settings
+from tickethub.routers import tickets
 from tickethub.sync import periodic_sync, run_sync
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
@@ -29,3 +30,5 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="TicketHub", version="1.0.0", lifespan=lifespan)
+
+app.include_router(tickets.router)
