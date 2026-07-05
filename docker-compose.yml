@@ -1,0 +1,23 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: sqlite+aiosqlite:////data/tickethub.db
+      SECRET_KEY: change-me-in-production-please-32-bytes
+      SYNC_INTERVAL_SECONDS: "300"
+    volumes:
+      - tickethub-data:/data
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - import urllib.request; urllib.request.urlopen('http://localhost:8000/health')
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  tickethub-data:
