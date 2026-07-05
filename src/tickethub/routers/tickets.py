@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status as http_sta
 from sqlalchemy import Select, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from tickethub.auth import get_current_user
+from tickethub.cache import stats_cache
 from tickethub.database import get_session
 from tickethub.models import Ticket
 from tickethub.schemas import (
@@ -67,11 +69,13 @@ async def get_ticket(ticket_id: int, session: AsyncSession = Depends(get_session
 async def create_ticket(
     payload: TicketCreate,
     session: AsyncSession = Depends(get_session),
+    _user: str = Depends(get_current_user),
 ):
     ticket = Ticket(**payload.model_dump(mode="json"))
     session.add(ticket)
     await session.commit()
     await session.refresh(ticket)
+    stats_cache.clear()
     return ticket
 
 
@@ -80,6 +84,7 @@ async def update_ticket(
     ticket_id: int,
     payload: TicketUpdate,
     session: AsyncSession = Depends(get_session),
+    _user: str = Depends(get_current_user),
 ):
     ticket = await session.get(Ticket, ticket_id)
     if ticket is None:
@@ -89,4 +94,5 @@ async def update_ticket(
         setattr(ticket, field, value)
     await session.commit()
     await session.refresh(ticket)
+    stats_cache.clear()
     return ticket
